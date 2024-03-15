@@ -14,8 +14,8 @@ jobs:
     steps:
     - name: checkout Git Repo
       uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker:$(date +%s)
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag docker:$(date +%s)
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
