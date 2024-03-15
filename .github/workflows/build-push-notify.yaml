@@ -31,6 +31,7 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+      run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 961973814558.dkr.ecr.us-east-2.amazonaws.com
     - name: Build the Docker image
       run: docker build -t docker .
     - name: Tag Docker Image
