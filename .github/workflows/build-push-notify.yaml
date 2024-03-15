@@ -1,0 +1,37 @@
+name: build-push
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout Git Repo
+    - uses: actions/checkout@v3
+
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: us-east-2  # Replace with your AWS region
+    
+    - name: Login to Amazon ECR
+      id: docker
+      uses: aws-actions/amazon-ecr-login@v1
+      run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 961973814558.dkr.ecr.us-east-2.amazonaws.com
+
+    - name: Build the Docker image
+      run: docker build -t docker .
+
+    - name: Tag Docker Image
+      run: docker tag docker:latest ${{ steps.login-ecr.outputs.registry }}/docker:latest
+
+    - name: Push Docker Image to ECR
+      run: docker push ${{ steps.login-ecr.outputs.registry }}/docker:latest
