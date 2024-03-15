@@ -31,3 +31,7 @@ jobs:
       run: docker tag docker:latest 961973814558.dkr.ecr.us-east-2.amazonaws.com/docker:latest
     - name: Push Docker Image to ECR
       run: docker push 961973814558.dkr.ecr.us-east-2.amazonaws.com/docker:latest
+    # Example of sending a webhook notification
+    - name: Send Webhook Notification
+      run: |
+        curl -X POST -H 'Content-Type: application/json' -d '{"event": "push", "repository": "public-repo"}' https://yagmurcrew.slack.com
